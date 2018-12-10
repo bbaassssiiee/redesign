@@ -1,0 +1,52 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+
+  # provision.yml runs on a vagrant up, packer.yml runs on packer build.
+  config.vm.provision "ansible" do |ansible|
+    ansible.inventory_path = "ansible/hosts.ini"
+    ansible.playbook = "ansible/vagrant.yml"
+    ansible.verbose = "vv"
+   end
+
+  # Preference order
+  config.vm.provider "parallels"
+  config.vm.provider "virtualbox"
+  config.vm.provider "vmware_fusion"
+
+  config.vm.provider "virtualbox" do |virtualbox|
+    virtualbox.gui = false
+    virtualbox.customize ["modifyvm", :id, "--memory", 2048]
+    virtualbox.customize ["modifyvm", :id, "--vram", "64"]
+  end
+
+  config.vm.provider "vmware_fusion" do |v|
+    v.vmx["memsize"] = "2048"
+    v.vmx["numvcpus"] = "2"
+    v.gui = false
+  end
+
+  config.vm.provider "parallels" do |prl|
+    prl.update_guest_tools = true
+    prl.memory = 2048
+    prl.cpus = 2
+  end
+
+  config.ssh.insert_key = false
+  config.vm.box_check_update = false
+
+
+  config.vm.define :redesign, autostart: true do |redesign_config|
+    redesign_config.vm.box = "centos75"
+    redesign_config.vm.network "forwarded_port", id: 'ssh', guest: 22, host: 2222, auto_correct: true
+    redesign_config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: false
+    redesign_config.vm.provider "virtualbox" do |vb|
+      vb.name = "redesign"
+    end
+    redesign_config.vm.provider "parallels" do |prl|
+      prl.name = "redesign"
+    end
+  end
+end
+
