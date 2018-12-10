@@ -1,18 +1,21 @@
 # redesign centos7
 
-This repo creates the redesign/centos7 box for use in Vagrant, VMWare or Azure.
-Packer is used as the build tool, and Ansible is used as the provisioner.
+This repo creates the redesign/centos7 box for use with Vagrant, in VirtualBox, Parallels, VMWare Desktop or Azure.
 
-Please note that **Packer v1.1.1 has been used.**
+Hashicorp Packer is used as the build tool, and Ansible is used as the provisioner.
+
+Please note that **Packer v1.3.2 has been used.**
 
 ## Vagrant
 
-The box is downloadable with a single command, but the included
-Vagrantfile works better.
+The box is downloadable with a single command:
 
 ```
 vagrant init redesign/centos7
 ```
+
+
+
 
 ## Azure
 
