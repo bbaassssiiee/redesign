@@ -1,0 +1,9 @@
+---
+# This playbook is run from packer during kickstart (phase 1)
+- hosts: 127.0.0.1
+  user: vagrant
+  become: yes
+
+  roles:
+    - packer
+    - dockpack.base_utils

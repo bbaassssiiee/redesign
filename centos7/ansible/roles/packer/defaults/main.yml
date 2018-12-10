@@ -1,0 +1,25 @@
+---
+
+# Unused kernel modules should be disabled.
+unused_modules:
+  - ata_generic
+  - binfmt_misc
+  - cramfs
+  - fjes
+  - freevxfs
+  - ghash_clmulni_intel
+  - hfs
+  - hfsplus
+  - i2c_piix4
+  - intel_powerclamp
+  - iosf_mbi
+  - jffs2
+  - parport_pc
+  - pata_acpi
+  - pcspkr
+  - ppdev
+  - serio_raw
+  - sg
+  - snd_intel8x0
+  - vfat
+  - video

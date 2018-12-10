@@ -1,0 +1,55 @@
+---
+
+- name: Disabled unused kernel modules
+  lineinfile:
+    dest: /etc/modprobe.d/CIS.conf
+    regexp: "^(#)?install {{ item }}(\\s|$)"
+    line: "install {{ item }} /bin/true"
+    create: yes
+  with_items: "{{ unused_modules }}"
+
+- name: Reconfigure SMTP banner settings in order to not disclose software version.
+  lineinfile:
+    path: /etc/postfix/main.cf
+    regexp: 'smtpd_banner'
+    line: 'smtpd_banner = $myhostname ESMTP'
+    state: present
+  notify: restart postfix
+
+- name: Restrict files/directory permissions for others. Group access to avoid root use.
+  lineinfile:
+    path: /etc/profile
+    regexp: "umask 02"
+    line: '    umask 027'
+    state: present
+
+- name: Create the legal banner when users log in.
+  copy:
+    src: issue.net
+    dest: /etc/issue.net
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Display the legal banner before user logs in on console.
+  copy:
+    src: issue.net
+    dest: /etc/issue
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Display a legal banner before at network login.
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^Banner"
+    line: Banner /etc/issue.net
+  notify: restart sshd
+
+- name: creates motd
+  copy:
+    src: motd
+    dest: /etc/motd
+    owner: root
+    group: root
+    mode: 0644

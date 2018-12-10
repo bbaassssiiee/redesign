@@ -1,0 +1,12 @@
+#!/usr/bin/env ansible-playbook -i hosts.ini
+# This playbook is run from vagrant for testing the box
+- hosts: centos7:!localhost
+  user: vagrant
+  become: yes
+
+  pre_tasks:
+    - name: show distribution
+      debug: msg={{ansible_distribution}}
+
+  roles:
+    - { role: packer, tags: 'packer' }

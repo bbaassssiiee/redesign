@@ -1,0 +1,28 @@
+MAIL_DIR	/var/spool/mail
+
+# The vagrant image should have an update by now
+PASS_MAX_DAYS	365
+PASS_MIN_DAYS	0
+# By convention vagrant images have an known password: vagrant
+PASS_MIN_LEN	7
+# This is for simulation
+PASS_WARN_AGE	30
+
+UID_MIN                  1000
+UID_MAX                 60000
+SYS_UID_MIN               201
+SYS_UID_MAX               999
+
+GID_MIN                  1000
+GID_MAX                 60000
+SYS_GID_MIN               201
+SYS_GID_MAX               999
+
+
+CREATE_HOME	yes
+
+UMASK           077
+
+USERGROUPS_ENAB yes
+
+ENCRYPT_METHOD SHA512
