@@ -1,0 +1,16 @@
+azurerm_subscription_id = "12345678-1234-1234-1234-123456789abc"
+azurerm_client_id = "12345678-1234-1234-1234-123456789abc"
+azurerm_client_secret = "12345678-1234-1234-1234-123456789abc"
+azurerm_tenant_id = "12345678-1234-1234-1234-123456789abc"
+
+image_uri = "https://mystorage.blob.core.windows.net/bas-demo-lab-disk-images/test-1-6a3bi0s0kwtlde.vhd"
+
+admin_username = "nimda"
+admin_password = ""
+
+address_space = "10.2.3.0/28"
+address_prefix = "10.2.3.0/28"
+product = "app"
+env = "tmp"
+machine_count = 1
+enable_boot_diagnostics = false
