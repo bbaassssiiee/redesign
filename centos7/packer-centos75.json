@@ -1,0 +1,214 @@
+{
+    "builders": [{
+            "boot_command": [
+                "<tab> append initrd=initrd.img inst.text inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/centos7.ks<enter><wait>"
+            ],
+            "boot_wait": "20s",
+            "guest_additions_path": "VBoxGuestAdditions.iso",
+            "guest_os_type": "RedHat_64",
+            "headless": false,
+            "http_directory": "kickstart",
+            "iso_checksum": "714acc0aefb32b7d51b515e25546835e55a90da9fb00417fbee2d03a62801efd",
+            "iso_checksum_type": "sha256",
+            "iso_urls": [
+                "file:///Users/Shared/CentOS-7-x86_64-Minimal-1804.iso",
+                "https://buildlogs.centos.org/rolling/7/isos/x86_64/CentOS-7-x86_64-Minimal-1804.iso"
+            ],
+            "output_directory": "packer-virtualbox-iso",
+            "shutdown_command": "echo 'vagrant' | sudo -S /sbin/shutdown -h 0",
+            "ssh_password": "vagrant",
+            "ssh_port": 22,
+            "ssh_username": "root",
+            "ssh_wait_timeout": "10000s",
+            "type": "virtualbox-iso",
+            "vboxmanage": [
+                [
+                    "modifyvm",
+                    "{{.Name}}",
+                    "--memory",
+                    "2048"
+                ],
+                [
+                    "modifyvm",
+                    "{{.Name}}",
+                    "--cpus",
+                    "2"
+                ]
+            ],
+            "virtualbox_version_file": ".vbox_version",
+            "vm_name": "redesign/centos7"
+        },
+        {
+            "type": "vmware-iso",
+            "headless": false,
+            "boot_command": [
+                "<tab> append initrd=initrd.img inst.text inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/centos7.ks<enter><wait>"
+            ],
+            "boot_wait": "30s",
+            "guest_os_type": "Centos-64",
+            "http_directory": "kickstart",
+            "iso_checksum": "714acc0aefb32b7d51b515e25546835e55a90da9fb00417fbee2d03a62801efd",
+            "iso_checksum_type": "sha256",
+            "iso_urls": ["file:///Users/Shared/CentOS-7-x86_64-Minimal-1804.iso",
+                "https://buildlogs.centos.org/rolling/7/isos/x86_64/CentOS-7-x86_64-Minimal-1804.iso"
+            ],
+            "output_directory": "packer-vmware-iso",
+            "ssh_username": "root",
+            "ssh_password": "vagrant",
+            "ssh_port": 22,
+            "ssh_wait_timeout": "10000s",
+            "shutdown_command": "echo 'vagrant' | sudo -S /sbin/shutdown -h 0",
+            "type": "vmware-iso",
+            "tools_upload_flavor": "linux",
+            "vm_name": "centos7",
+            "vmdk_name": "centos7",
+            "vmx_data": {
+                "cpuid.coresPerSocket": "1",
+                "memsize": "2048",
+                "numvcpus": "2"
+            }
+        },
+        {
+            "type": "parallels-iso",
+            "boot_command": [
+                "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/centos7.ks<enter><wait>"
+            ],
+            "boot_wait": "30s",
+            "disk_size": "30720",
+            "guest_os_type": "centos7",
+            "http_directory": "kickstart",
+            "iso_checksum": "714acc0aefb32b7d51b515e25546835e55a90da9fb00417fbee2d03a62801efd",
+            "iso_checksum_type": "sha256",
+            "iso_urls": ["file:///Users/Shared/CentOS-7-x86_64-Minimal-1804.iso",
+                "https://buildlogs.centos.org/rolling/7/isos/x86_64/CentOS-7-x86_64-Minimal-1804.iso"
+            ],
+            "output_directory": "output-parallels-iso",
+            "parallels_tools_flavor": "lin",
+            "prlctl": [
+                [
+                    "set",
+                    "{{.Name}}",
+                    "--memsize",
+                    "2048"
+                ],
+                [
+                    "set",
+                    "{{.Name}}",
+                    "--cpus",
+                    "2"
+                ]
+            ],
+            "prlctl_version_file": ".prlctl_version",
+            "shutdown_command": "echo 'vagrant' | sudo -S /sbin/halt -h -p",
+            "ssh_password": "vagrant",
+            "ssh_port": 22,
+            "ssh_username": "root",
+            "ssh_wait_timeout": "10000s",
+            "vm_name": "centos7"
+        },
+        {
+            "type": "azure-arm",
+            "client_id": "{{user `client_id`}}",
+            "client_secret": "{{user `client_secret`}}",
+            "subscription_id": "{{user `subscription_id`}}",
+            "tenant_id": "{{user `tenant_id`}}",
+            "managed_image_resource_group_name": "{{user `resource_group`}}",
+            "managed_image_name": "centos73",
+
+            "os_type": "Linux",
+            "image_offer": "CentOS",
+            "image_publisher": "OpenLogic",
+            "image_sku": "7.3",
+
+            "azure_tags": {
+                "environment": "{{user `env`}}",
+                "organization": "snbv",
+                "product": "centos7image"
+            },
+            "location": "West Europe",
+            "vm_size": "Standard_DS2_v2"
+        }
+    ],
+    "post-processors": [{
+        "compression_level": 9,
+        "keep_input_artifact": false,
+        "only": [
+            "virtualbox-iso",
+            "parallels-iso",
+            "vmware-iso"
+        ],
+        "output": "packer/{{.Provider}}-centos75.box",
+        "type": "vagrant"
+    }],
+    "provisioners": [{
+            "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+            "scripts": [
+                "scripts/ansible.sh"
+            ],
+            "type": "shell"
+        },
+        {
+            "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+            "only": [
+                "virtualbox-iso",
+                "parallels-iso",
+                "vmware-iso"
+            ],
+            "scripts": [
+                "scripts/vagrant.sh",
+                "scripts/vmtools.sh"
+            ],
+            "type": "shell"
+        },
+        {
+            "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+            "only": [
+                "azure-arm"
+            ],
+            "scripts": [
+                "scripts/azure.sh"
+            ],
+            "type": "shell"
+        },
+        {
+            "playbook_file": "ansible/packer.yml",
+            "role_paths": [
+                "ansible/roles/packer",
+                "ansible/roles/dockpack.base_utils"
+            ],
+            "type": "ansible-local"
+        },
+        {
+            "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+            "only": [
+                "virtualbox-iso",
+                "parallels-iso",
+                "vmware-iso"
+            ],
+            "script": "scripts/cleanup.sh",
+            "type": "shell"
+        },
+        {
+            "execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'",
+            "inline": [
+                "/usr/sbin/waagent -force -deprovision+user && export HISTSIZE=0 && sync"
+            ],
+            "inline_shebang": "/bin/sh -x",
+            "only": [
+                "azure-arm"
+            ],
+            "type": "shell"
+        }
+    ],
+    "push": {
+        "name": "redesign/centos7"
+    },
+    "variables": {
+        "client_id": "{{env `ARM_CLIENT_ID`}}",
+        "client_secret": "{{env `ARM_CLIENT_SECRET`}}",
+        "resource_group": "{{env `ARM_RESOURCE_GROUP`}}",
+        "subscription_id": "{{env `ARM_SUBSCRIPTION_ID`}}",
+        "tenant_id": "{{env `ARM_TENNANT_ID`}}",
+        "storage_account": "{{env `ARM_STORAGE_ACCOUNT`}}"
+    }
+}
