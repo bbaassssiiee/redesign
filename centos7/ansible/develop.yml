@@ -6,7 +6,7 @@
 
   pre_tasks:
     - name: show distribution
-      debug: msg={{ansible_distribution}}
+      debug: msg={{ ansible_distribution }}
 
   roles:
     - { role: packer, tags: 'packer' }

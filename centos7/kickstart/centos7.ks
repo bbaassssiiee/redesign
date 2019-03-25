@@ -52,6 +52,7 @@ bzip2
 libstdc++-devel
 kernel-devel
 kernel-headers
+kernel-devel-3.10.0-862.el7.x86_64
 # for guest tools
 checkpolicy
 selinux-policy-devel
