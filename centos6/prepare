@@ -1,0 +1,5 @@
+#!/bin/bash -e
+
+ansible-galaxy install --force -p ansible/roles -r ansible/requirements.yml
+chmod 0700 ./pki
+chmod 0600 ./pki/vagrant.rsa

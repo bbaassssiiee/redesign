@@ -1,6 +1,8 @@
 ### Linux ###
 *~
 
+# For the download
+*.iso
 # For built boxes
 *.box
 
@@ -11,6 +13,8 @@ centos7/output-virtualbox/
 # Cache objects
 centos7/packer/
 centos7/packer_cache/
+centos6/packer/
+centos6/packer_cache/
 
 For in-progress builds of boxes
 centos7/packer-*-vbox
