@@ -1,6 +1,6 @@
 # Make a base box for Azure and VirtualBox
 #
-FLAVOR=centos75
+FLAVOR ?= centos75
 PROVIDER ?= virtualbox
 DOWNLOADS=/Users/Shared
 
@@ -111,4 +111,6 @@ debug:
 build: check
 	packer build -only=${PROVIDER}-iso packer-${FLAVOR}.json
 
-.PHONY: azurevm
+.PHONY: vmware-ova
+vmware-ova: check
+	packer build -only=vmware-ova packer-${FLAVOR}.json
