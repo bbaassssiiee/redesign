@@ -13,6 +13,11 @@
   name: dockpack.base_utils
   version: master
 
+- src: https://github.com/dockpack/base_cplusplus.git
+  scm: git
+  name: dockpack.base_cplusplus
+  version: master
+
 - src: https://github.com/dockpack/base_goss.git
   scm: git
   name: dockpack.base_goss
