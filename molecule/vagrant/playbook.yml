@@ -1,0 +1,7 @@
+---
+- hosts: all
+  become: true
+  roles:
+    - role: dockpack.base_epel
+    - role: dockpack.base_goss
+    - role: dockpack.base_cplusplus

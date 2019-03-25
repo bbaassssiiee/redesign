@@ -1,0 +1,39 @@
+- name: Testing prerequisites
+  hosts: all
+  become: True
+  gather_facts: yes
+  vars:
+    goss_dir: '/root'
+    goss_file: "{{ goss_dir}}/goss.yaml"
+  tasks:
+
+    - name: Clear previous Goss file
+      file:
+        state: absent
+        dest: "{{ goss_file }}"
+
+    - name: Start Goss file
+      copy:
+        content: "gossfile:"
+        dest: "{{ goss_file }}"
+        force: no
+        owner: root
+
+    - name: newline
+      shell: echo >> "{{ goss_file }}"
+
+    - name: Assemble Goss yml files
+      shell: "ls -1 *.yml|sed 's/^/  /;s/$/ : {}/' >> {{ goss_file }}"
+      args:
+        chdir: "{{ goss_dir }}"
+      changed_when: True
+
+    - name: Render Goss tests
+      shell: goss render >> goss.yaml
+      args:
+        chdir: "{{ goss_dir }}"
+      changed_when: True
+
+    - name: Test goss files
+      shell: "export GOSS_FILE={{ goss_file }};goss validate --format nagios_verbose"
+      changed_when: False
