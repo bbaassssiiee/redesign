@@ -1,0 +1,19 @@
+---
+# re-use roles from https://galaxy.ansible.com
+# to install:
+# ansible-galaxy install --force -r requirements.yml
+
+- src: https://github.com/bbaassssiiee/commoncentos.git
+  scm: git
+  name: bbaassssiiee.commoncentos
+  version: 1.0.0
+
+- src: https://github.com/dockpack/base_utils.git
+  scm: git
+  name: dockpack.base_utils
+  version: master
+
+- src: https://github.com/dockpack/base_goss.git
+  scm: git
+  name: dockpack.base_goss
+  version: master

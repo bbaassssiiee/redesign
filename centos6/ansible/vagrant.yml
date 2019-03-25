@@ -1,0 +1,9 @@
+---
+# This playbook is run as a provisioner for vagrant virtual machines
+- name: bootstrap centos6 hosts
+  hosts: all
+  gather_facts: True
+  become: yes
+
+  roles:
+    - dockpack.base_cplusplus
