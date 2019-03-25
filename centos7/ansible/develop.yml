@@ -9,4 +9,4 @@
       debug: msg={{ ansible_distribution }}
 
   roles:
-    - { role: packer, tags: 'packer' }
+    - {role: packer, tags: 'packer'}

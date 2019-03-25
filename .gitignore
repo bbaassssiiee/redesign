@@ -1,6 +1,9 @@
 ### Linux ###
 *~
 
+# For the galaxy roles
+centos7/ansible/roles
+centos6/ansible/roles
 # For the download
 *.iso
 # For built boxes

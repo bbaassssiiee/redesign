@@ -1,0 +1,13 @@
+---
+
+- src: https://github.com/dockpack/base_epel.git
+  version: 0.3.0
+  name: dockpack.base_epel
+
+- src: https://github.com/dockpack/base_cplusplus.git
+  version: master
+  name: dockpack.base_cplusplus
+
+- src: https://github.com/dockpack/base_goss.git
+  version: master
+  name: dockpack.base_goss
