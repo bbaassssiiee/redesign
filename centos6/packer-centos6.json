@@ -35,7 +35,7 @@
         ]
       ],
       "virtualbox_version_file": ".vbox_version",
-      "vm_name": "centos6"
+      "vm_name": "redesign/centos6"
     }
   ],
   "post-processors": [
@@ -78,6 +78,6 @@
     }
   ],
   "push": {
-    "name": "centos6"
+    "name": "redesign/centos6"
   }
 }

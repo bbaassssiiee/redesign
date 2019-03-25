@@ -19,7 +19,7 @@ packer:
 packer/virtualbox-centos${M}.box: packer
 
 box:
-	vagrant box add --force --name=centos${M} packer/virtualbox-centos${M}.box
+	vagrant box add --force --name=redesign/centos${M} packer/virtualbox-centos${M}.box
 	vagrant up --no-provision centos${M}
 	vagrant ssh
 
