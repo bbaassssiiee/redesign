@@ -12,6 +12,9 @@ umount /tmp/vbox;
 rm -rf /tmp/vbox;
 rm -f $HOME_DIR/*.iso;
 
+yum -y erase gcc cpp libstdc++-devel kernel-devel kernel-headers
+yum -y clean all
+
 
 if [[ "$PACKER_BUILDER_TYPE" == virtualbox* ]]; then
   ## https://access.redhat.com/site/solutions/58625 (subscription required)
