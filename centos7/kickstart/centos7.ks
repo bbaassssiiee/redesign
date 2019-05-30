@@ -30,32 +30,25 @@ logvol /               --fstype xfs 	--name=rootvg-root     --vgname=rootvg --si
 firstboot --disable
 
 # Network information
-network  --bootproto=dhcp --ipv6=auto --activate --hostname=localhost.localdomain
-firewall --disabled
+network --bootproto=dhcp --noipv6 --activate --hostname=redesign
+firewall --enabled --service=ssh
 selinux --permissive
 # Reboot the machine after successful installation
 reboot --eject
 
-%packages --ignoremissing
-@core
+%packages --nobase --ignoremissing --excludedocs --instLangs=en_US.utf8
+@Core
+acpid
+libselinux-python
+libsemanage-python
+openssh-clients
+python-httplib2
 sudo
 make
 wget
 net-tools
 bind-utils
 yum-utils
-
-# for guest additions
-gcc
-cpp
-bzip2
-libstdc++-devel
-kernel-devel
-kernel-headers
-kernel-devel-3.10.0-862.el7.x86_64
-# for guest tools
-checkpolicy
-selinux-policy-devel
 
 # for vagrant
 nfs-utils
@@ -77,10 +70,6 @@ chrony
 selinux-policy-mls
 
 ## Remove unnecessary packages
--perl
--gtk2
--libX11
--hicolor-icon-theme
 -avahi
 -avahi-libs
 -avahi-autoipd
@@ -90,26 +79,11 @@ selinux-policy-mls
 -alsa-tools-firmware
 -ivtv-firmware
 -iwl100
--iwl100-firmware
--iwl105-firmware
--iwl135-firmware
+-iwl*-firmware
 -iwl1000
--iwl1000-firmware
--iwl2000-firmware
--iwl2030-firmware
--iwl3160-firmware
 -iwl3945
--iwl3945-firmware
 -iwl4965
--iwl4965-firmware
--iwl5000-firmware
--iwl5150-firmware
--iwl6000-firmware
--iwl6000g2a-firmware
--iwl6000g2b-firmware
--iwl6050-firmware
 -iwl7260
--iwl7260-firmware
 -libmpc
 -libsysfs
 -mpfr
@@ -117,7 +91,7 @@ selinux-policy-mls
 %end
 
 %post
-#/usr/bin/yum -y upgrade
+/usr/bin/yum -y upgrade
 package-cleanup --oldkernels --count=1yum in
 sed -i 's/rhgb quiet//' /etc/grub.conf
 # for ansible etc.
