@@ -1,6 +1,14 @@
 {
   "builders": [
     {
+      "project_id": "{{user `project_id`}}",
+      "region": "{{user `google_region`}}",
+      "source_image": "{{user `google_centos6`}}",
+      "ssh_username": "centos",
+      "type": "googlecompute",
+      "zone": "{{user `google_zone`}}"
+    },
+    {
       "boot_command": [
         "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/centos6.cfg<enter><wait>"
       ],
@@ -35,7 +43,7 @@
         ]
       ],
       "virtualbox_version_file": ".vbox_version",
-      "vm_name": "redesign/centos6"
+      "vm_name": "centos6"
     }
   ],
   "post-processors": [
@@ -49,6 +57,11 @@
     {
       "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
       "override": {
+        "googlecompute": {
+          "scripts": [
+            "scripts/ansible.sh"
+          ]
+        },
         "virtualbox-iso": {
           "scripts": [
             "scripts/vagrant.sh",
@@ -78,6 +91,12 @@
     }
   ],
   "push": {
-    "name": "redesign/centos6"
+    "name": "centos6"
+  },
+  "variables": {
+    "google_centos6": "{{env `GOOGLE_CENTOS6`}}",
+    "google_region": "{{env `GOOGLE_REGION`}}",
+    "google_zone": "{{env `GOOGLE_ZONE`}}",
+    "project_id": "{{env `GOOGLE_PROJECT`}}"
   }
 }
