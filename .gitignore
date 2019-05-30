@@ -4,6 +4,7 @@
 # For the galaxy roles
 centos7/ansible/roles
 centos6/ansible/roles
+centos6/ansible/.gradle
 # For the download
 *.iso
 # For built boxes
